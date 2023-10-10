@@ -1,3 +1,5 @@
+# DOCS SQLite: https://www.sqlite.org/doclist.html
+
 import sqlite3
 from pathlib import Path
 
