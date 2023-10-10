@@ -12,10 +12,20 @@ TABLE_NAME = 'customers'
 connection = sqlite3.connect(DB_FILE)
 cursor = connection.cursor()
 
+# THE FAMOUS DELETE SEM WHERE
+cursor.execute(f'DELETE FROM {TABLE_NAME}')
+
+# Create table
 cursor.execute(
     f'CREATE TABLE IF NOT EXISTS {TABLE_NAME}'
     '(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, weight REAL)'
 )
+# Exec create table
+connection.commit()
+
+# Register a value in the columm
+cursor.execute(
+    f'INSERT INTO {TABLE_NAME} (id, name, weight) VALUES (NULL, "Caio Dantas", 105.6), (NULL, "UISH Kiasn", 123.6), (NULL, "Esdu Iekm", 105.6), (NULL, "Grigo Hur", 102), (NULL, "Isadora Dantas", 78.9)')
 
 connection.commit()
 
