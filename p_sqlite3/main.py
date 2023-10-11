@@ -1,5 +1,3 @@
-# DOCS SQLite: https://www.sqlite.org/doclist.html
-
 import sqlite3
 from pathlib import Path
 
@@ -8,48 +6,56 @@ DB_NAME = 'db.sqlite3'
 DB_FILE = ROOT_DIR / DB_NAME
 TABLE_NAME = 'customers'
 
-# Open connection with my DB
 connection = sqlite3.connect(DB_FILE)
 cursor = connection.cursor()
 
-# THE FAMOUS DELETE SEM WHERE
-cursor.execute(f'DELETE FROM {TABLE_NAME}')
+# CRUD - Create Read   Update Delete
+# SQL -  INSERT SELECT UPDATE DELETE
 
-# cursor.execute(f'DELETE FROM sqlite_sequence WHERE name ="{TABLE_NAME}"')
-# Create table
+# CUIDADO: fazendo delete sem where
+cursor.execute(
+    f'DELETE FROM {TABLE_NAME}'
+)
+
+# DELETE mais cuidadoso
+cursor.execute(
+    f'DELETE FROM sqlite_sequence WHERE name="{TABLE_NAME}"'
+)
+connection.commit()
+
+# Cria a tabela
 cursor.execute(
     f'CREATE TABLE IF NOT EXISTS {TABLE_NAME}'
-    '(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, weight REAL)'
+    '('
+    'id INTEGER PRIMARY KEY AUTOINCREMENT,'
+    'name TEXT,'
+    'weight REAL'
+    ')'
 )
-# Exec create table
 connection.commit()
 
-# Register a value in the columm
-# WARNING: cuidado com sql injection
-# cursor.execute(
-#     f'INSERT INTO {TABLE_NAME} (name, weight) VALUES'
-#     '("Caio Dantas", 105.6),'
-#     '("UISH Kiasn", 123.6),'
-#     '("Esdu Iekm", 105.6),'
-#     '("Grigo Hur", 102),'
-#     '("Isadora Dantas", 78.9)'
-# )
-
+# Registrar valores nas colunas da tabela
 sql = (
-    f'INSERT INTO {TABLE_NAME} (name, weight) VALUES (?, ?)'
+    f'INSERT INTO {TABLE_NAME} '
+    '(name, weight) '
+    'VALUES '
+    '(:nome, :peso)'
 )
-# cursor.execute(sql, ['Caio Dantas', 78])
-
-connection.executemany(
-    sql, [
-        ['Caio Dantas', 90], ['Rodrigo Greg', 189.9],
-        ['Fada Dente', 21], ['Santa Ana', 87],
-        ['Felino Silvestre', 79], ['Yaum Barj', 123]
-    ]
-)
+# cursor.execute(sql, ['Joana', 4])
+# cursor.executemany(
+#     sql,
+#     (
+#         ('Joana', 4), ('Luiz', 5)
+#     )
+# )
+cursor.execute(sql, {'nome': 'Sem nome', 'peso': 3})
+cursor.executemany(sql, (
+    {'nome': 'Joãozinho', 'peso': 3},
+    {'nome': 'Maria', 'peso': 2},
+    {'nome': 'Helena', 'peso': 4},
+    {'nome': 'Joana', 'peso': 5},
+))
 connection.commit()
-
-# Close my connection with DB
 cursor.close()
 connection.close()
 
