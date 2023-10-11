@@ -15,6 +15,7 @@ cursor = connection.cursor()
 # THE FAMOUS DELETE SEM WHERE
 cursor.execute(f'DELETE FROM {TABLE_NAME}')
 
+cursor.execute(f'DELETE FROM sqlite_sequence WHERE name ="{TABLE_NAME}"')
 # Create table
 cursor.execute(
     f'CREATE TABLE IF NOT EXISTS {TABLE_NAME}'
@@ -24,6 +25,7 @@ cursor.execute(
 connection.commit()
 
 # Register a value in the columm
+# WARNING: cuidado com sql injection
 cursor.execute(
     f'INSERT INTO {TABLE_NAME} (id, name, weight) VALUES (NULL, "Caio Dantas", 105.6), (NULL, "UISH Kiasn", 123.6), (NULL, "Esdu Iekm", 105.6), (NULL, "Grigo Hur", 102), (NULL, "Isadora Dantas", 78.9)')
 
