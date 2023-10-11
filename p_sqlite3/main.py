@@ -15,7 +15,7 @@ cursor = connection.cursor()
 # THE FAMOUS DELETE SEM WHERE
 cursor.execute(f'DELETE FROM {TABLE_NAME}')
 
-cursor.execute(f'DELETE FROM sqlite_sequence WHERE name ="{TABLE_NAME}"')
+# cursor.execute(f'DELETE FROM sqlite_sequence WHERE name ="{TABLE_NAME}"')
 # Create table
 cursor.execute(
     f'CREATE TABLE IF NOT EXISTS {TABLE_NAME}'
@@ -44,7 +44,7 @@ connection.executemany(
     sql, [
         ['Caio Dantas', 90], ['Rodrigo Greg', 189.9],
         ['Fada Dente', 21], ['Santa Ana', 87],
-        ['Felino Silvestre', 79], ['Yaum Barj', 123],
+        ['Felino Silvestre', 79], ['Yaum Barj', 123]
     ]
 )
 connection.commit()
@@ -52,3 +52,6 @@ connection.commit()
 # Close my connection with DB
 cursor.close()
 connection.close()
+
+if __name__ == '__main__':
+    print(sql)
