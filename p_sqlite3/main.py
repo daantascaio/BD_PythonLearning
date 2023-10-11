@@ -34,10 +34,19 @@ connection.commit()
 #     '("Grigo Hur", 102),'
 #     '("Isadora Dantas", 78.9)'
 # )
+
 sql = (
     f'INSERT INTO {TABLE_NAME} (name, weight) VALUES (?, ?)'
 )
-cursor.execute(sql, ['Caio Dantas', 78])
+# cursor.execute(sql, ['Caio Dantas', 78])
+
+connection.executemany(
+    sql, [
+        ['Caio Dantas', 90], ['Rodrigo Greg', 189.9],
+        ['Fada Dente', 21], ['Santa Ana', 87],
+        ['Felino Silvestre', 79], ['Yaum Barj', 123],
+    ]
+)
 connection.commit()
 
 # Close my connection with DB
