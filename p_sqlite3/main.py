@@ -26,9 +26,18 @@ connection.commit()
 
 # Register a value in the columm
 # WARNING: cuidado com sql injection
-cursor.execute(
-    f'INSERT INTO {TABLE_NAME} (id, name, weight) VALUES (NULL, "Caio Dantas", 105.6), (NULL, "UISH Kiasn", 123.6), (NULL, "Esdu Iekm", 105.6), (NULL, "Grigo Hur", 102), (NULL, "Isadora Dantas", 78.9)')
-
+# cursor.execute(
+#     f'INSERT INTO {TABLE_NAME} (name, weight) VALUES'
+#     '("Caio Dantas", 105.6),'
+#     '("UISH Kiasn", 123.6),'
+#     '("Esdu Iekm", 105.6),'
+#     '("Grigo Hur", 102),'
+#     '("Isadora Dantas", 78.9)'
+# )
+sql = (
+    f'INSERT INTO {TABLE_NAME} (name, weight) VALUES (?, ?)'
+)
+cursor.execute(sql, ['Caio Dantas', 78])
 connection.commit()
 
 # Close my connection with DB
