@@ -4,8 +4,8 @@
 # GitHub: https://github.com/PyMySQL/PyMySQL
 import os
 
-import pymysql
 import dotenv
+import pymysql
 
 TABLE_NAME = 'customers'
 
@@ -16,29 +16,47 @@ connection = pymysql.connect(
     user=os.environ['MYSQL_USER'],
     password=os.environ['MYSQL_PASSWORD'],
     database=os.environ['MYSQL_DATABASE'],
+    charset='utf8mb4'
 )
+
 with connection:
     with connection.cursor() as cursor:
-        cursor.execute(
-            f'CREATE TABLE IF NOT EXISTS {TABLE_NAME} ( '
+        cursor.execute(  # type: ignore
+            f'CREATE TABLE IF NOT EXISTS {TABLE_NAME} ('
             'id INT NOT NULL AUTO_INCREMENT, '
             'nome VARCHAR(50) NOT NULL, '
             'idade INT NOT NULL, '
-            'PRIMARY KEY (id) '
+            'PRIMARY KEY (id)'
             ') '
         )
-        cursor.execute(f'TRUNCATE TABLE {TABLE_NAME}')
-        connection.commit()
 
-        with connection.cursor() as cursor:
-            sql = (
-                f'INSERT INTO {TABLE_NAME} '
-                '(nome, idade) '
-                'VALUES '
-                '(%s, %s) '
-            )
+        cursor.execute(f'TRUNCATE TABLE {TABLE_NAME}')  # type: ignore
+    connection.commit()
+
+    with connection.cursor() as cursor:
+        sql = (
+            f'INSERT INTO {TABLE_NAME} '
+            '(nome, idade) '
+            'VALUES '
+            '(%s, %s) '
+        )
         data = ('Luiz', 18)
-        result = cursor.execute(sql, data)
-        print(sql, data)
+        result = cursor.execute(sql, data)  # type: ignore
+    connection.commit()
+
+    with connection.cursor() as cursor:
+        sql = (
+            f'INSERT INTO {TABLE_NAME} '
+            '(nome, idade) '
+            'VALUES '
+            '(%(name)s, %(age)s) '
+        )
+        data2 = {
+            "age": 37,
+            "name": "Le",
+        }
+        result = cursor.execute(sql, data2)  # type: ignore
+        print(sql)
+        print(data2)
         print(result)
     connection.commit()
