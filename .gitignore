@@ -1,6 +1,7 @@
 __localcode
 .DS_Store
 chromedriver
+bkp_bd
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
